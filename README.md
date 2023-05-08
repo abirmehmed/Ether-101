@@ -1,5 +1,3 @@
-Sure, I can try to write a readme.md for an ethers.js tutorial. Here is a possible example:
-
 # Ethers.js Tutorial
 
 This is a tutorial on how to use [ethers.js](https://docs.ethers.io/v6/) library to interact with the Ethereum network. Ethers.js is a lightweight and modular library for working with Ethereum smart contracts, wallets, providers and more.
