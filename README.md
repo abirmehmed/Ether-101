@@ -82,6 +82,6 @@ If you want to learn more about Ethereum development, you can check out these re
 - [Ethereum.org](https://ethereum.org/en/) - The official website of Ethereum, which has guides, tutorials, tools and more.
 - [CryptoZombies](https://cryptozombies.io/) - A fun and interactive way to learn how to write smart contracts in Solidity.
 - [OpenZeppelin](https://openzeppelin.com/) - A platform for secure smart contract development, which has libraries, tools, audits and more.
--[Truffle](https://www.trufflesuite.com/) - A development environment, testing framework and asset pipeline for Ethereum.
+- [Truffle](https://www.trufflesuite.com/) - A development environment, testing framework and asset pipeline for Ethereum.
 
 
