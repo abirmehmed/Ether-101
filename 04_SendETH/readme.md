@@ -195,4 +195,9 @@ We use `wallet2` to send `0.001 ETH` to `wallet1`, and print the wallet balance 
     console.log(`Wallet 1: ${ethers.formatEther(await provider.getBalance(wallet1WithProvider))} ETH`)
     console.log(`Wallet 2: ${ethers.formatEther(await provider.getBalance(wallet2))} ETH`)
 ```
+Sure, here is the translation:
+
+## Summary
+
+In this lecture, we introduced the `Signer` signer class and the `Wallet` wallet class, used the wallet instance to get the address, mnemonic phrase, private key, number of interactions on the chain, and sent `ETH`.
 
