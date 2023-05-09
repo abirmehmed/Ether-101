@@ -38,4 +38,105 @@ const wallet1 = new ethers.Wallet.createRandom()
 ```
 
 ### Method 2: Create a wallet object with a private key
+
 If we know the private key, we can use the `ethers.Wallet()` function to create a `Wallet` object.
+Sure, here is the translation:
+
+```javascript
+// Create a wallet object with a private key and provider
+const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
+const wallet2 = new ethers.Wallet(privateKey, provider)
+```
+
+### Method 3: Create a wallet object from a mnemonic phrase
+
+If we know the mnemonic phrase, we can use the `ethers.Wallet.fromMnemonic()` function to create a `Wallet` object.
+
+
+```javascript
+// Create a wallet object from a mnemonic phrase
+const wallet3 = new ethers.Wallet.fromMnemonic(mnemonic.phrase)
+```
+### Other methods: Create a wallet object from a JSON file
+The above three methods can meet most of the needs. Of course, you can also use `ethers.Wallet.fromEncryptedJson` to decrypt a `JSON` wallet file and create a wallet instance. The `JSON` file is the `keystore` file, which usually comes from wallets such as `Geth`, `Parity`, etc. Those who have built an Ethereum node with `Geth` will not be unfamiliar with the `keystore` file.
+
+## Send `ETH`
+
+We can use the `Wallet` instance to send `ETH`. First, we need to construct a transaction request, in which we declare the receiving address `to` and the amount of `ETH` to send `value`. The transaction request type `TransactionRequest` can contain information such as the sender `from`, nonce value `nounce`, request data `data`, etc., which will be explained in more detail in later tutorials.
+
+```javascript
+    // Create a transaction request, parameters: to is the receiving address, value is the amount of ETH
+    const tx = {
+        to: address1,
+        value: ethers.parseEther("0.001")
+    }
+```
+
+Then, we can use the `sendTransaction` method of the `Wallet` class to send the transaction, wait for the transaction to be on the chain, and get the receipt of the transaction. It's very simple.
+
+```javascript
+    // Send transaction, get receipt
+    const receipt = await wallet2.sendTransaction(tx)
+    await receipt.wait() // Wait for confirmation on the chain
+    console.log(receipt) // Print transaction details
+```
+
+Sure, here is the translation:
+
+## Code example
+
+### 1. Create a `Provider` instance
+
+```javascript
+// Use the Wallet class to send ETH
+// Since playcode does not support the ethers.Wallet.createRandom() function, we can only use VScode to run this lecture code
+import { ethers } from "ethers";
+
+// Connect to the Ethereum test network using Alchemy's rpc node
+// To prepare alchemy API, you can refer to https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
+const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';
+const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
+```
+
+### 2. Create a `Wallet` instance with three different methods
+
+- Create a `Wallet` object with a random private key. This method creates a standalone wallet, and we need to use the `connect(provider)` function to connect to the Ethereum node. This method creates a wallet that can use `mnemonic` to get the mnemonic phrase.
+
+```javascript
+// Create a random wallet object
+const wallet1 = ethers.Wallet.createRandom()
+const wallet1WithProvider = wallet1.connect(provider)
+const mnemonic = wallet1.mnemonic // Get the mnemonic phrase
+```
+
+- Create a `Wallet` object with a private key and a `Provider` instance. This method creates a wallet that cannot get the mnemonic phrase.
+```javascript
+// Create a wallet object with a private key and provider
+const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
+const wallet2 = new ethers.Wallet(privateKey, provider)
+```
+
+- Create a `Wallet` object with a mnemonic phrase. Here we use the mnemonic phrase of `wallet1`, so the private key and public key of the created wallet are the same as `wallet1`.
+
+```javascript
+// Create a wallet object from a mnemonic phrase
+const wallet3 = ethers.Wallet.fromPhrase(mnemonic.phrase)
+```
+
+### 3. Get wallet address
+
+Use the `getAddress()` function to get the wallet address.
+
+
+```javascript
+    const address1 = await wallet1.getAddress()
+    const address2 = await wallet2.getAddress() 
+    const address3 = await wallet3.getAddress() // Get address
+    console.log(`1. Get wallet address`);
+    console.log(`Wallet 1 address: ${address1}`);
+    console.log(`Wallet 2 address: ${address2}`);
+    console.log(`Wallet 3 address: ${address3}`);
+    console.log(`Are wallet 1 and wallet 3 addresses the same: ${address1 === address3}`);
+    
+```
+
