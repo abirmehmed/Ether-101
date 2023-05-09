@@ -18,7 +18,6 @@ const wallet2 = new ethers.Wallet(privateKey, provider)
 
 // Create a wallet object from the mnemonic phrase
 const wallet3 = ethers.Wallet.fromPhrase(mnemonic.phrase)
-You're welcome. Here is the translation:
 
 const main = async () => {
     // 1. Get wallet address
