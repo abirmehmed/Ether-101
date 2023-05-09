@@ -139,4 +139,60 @@ Use the `getAddress()` function to get the wallet address.
     console.log(`Are wallet 1 and wallet 3 addresses the same: ${address1 === address3}`);
     
 ```
+Sure, here is the translation:
+
+### 4. Get mnemonic phrase
+
+Use the wallet object's `mnemonic.phrase` member to get the mnemonic phrase:
+
+```javascript
+console.log(`Wallet 1 mnemonic phrase: ${wallet1.mnemonic.phrase}`)
+```
+![Get mnemonic phrase](img/4-2.png)
+
+### 5. Get private key
+Use the wallet object's `privateKey` member to get the private key:
+
+```javascript
+    console.log(`Wallet 2 private key: ${wallet2.privateKey}`)
+```
+### 6. Get the number of interactions on the chain
+Use the `getTransactionCount()` function to get the number of interactions on the chain.
+
+```javascript
+    const txCount1 = await wallet1WithProvider.getTransactionCount()
+    const txCount2 = await wallet2.getTransactionCount()
+    console.log(`Wallet 1 number of transactions sent: ${txCount1}`)
+    console.log(`Wallet 2 number of transactions sent: ${txCount2}`)
+```
+### 7. Send `ETH`
+
+We use `wallet2` to send `0.001 ETH` to `wallet1`, and print the wallet balance before and after the transaction. Since `wallet1` is a newly created random private key wallet, the balance before the transaction is `0`, and the balance after the transaction is `0.001 ETH`.
+
+
+```javascript
+    // 5. Send ETH
+    // If this wallet has no goerli testnet ETH left, go to the faucet to get some, wallet address: 0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2
+    // 1. chainlink faucet: https://faucets.chain.link/goerli
+    // 2. paradigm faucet: https://faucet.paradigm.xyz/
+    console.log(`\n5. Send ETH (testnet)`);
+    // i. Print balance before transaction
+    console.log(`i. Balance before sending`)
+    console.log(`Wallet 1: ${ethers.formatEther(await provider.getBalance(wallet1WithProvider))} ETH`)
+    console.log(`Wallet 2: ${ethers.formatEther(await provider.getBalance(wallet2))} ETH`)
+    // ii. Construct transaction request, parameters: to is the receiving address, value is the amount of ETH
+    const tx = {
+        to: address1,
+        value: ethers.parseEther("0.001")
+    }
+    // iii. Send transaction, get receipt
+    console.log(`\nii. Wait for transaction confirmation on the blockchain (takes a few minutes)`)
+    const receipt = await wallet2.sendTransaction(tx)
+    await receipt.wait() // Wait for confirmation on the chain
+    console.log(receipt) // Print transaction details
+    // iv. Print balance after transaction
+    console.log(`\niii. Balance after sending`)
+    console.log(`Wallet 1: ${ethers.formatEther(await provider.getBalance(wallet1WithProvider))} ETH`)
+    console.log(`Wallet 2: ${ethers.formatEther(await provider.getBalance(wallet2))} ETH`)
+```
 
