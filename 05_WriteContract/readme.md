@@ -103,3 +103,35 @@ Where `METHOD_NAME` is the name of the function to call, `args` are the function
     const balanceWETH = await contractWETH.balanceOf(address)
     console.log(`WETH position before deposit: ${ethers.formatEther(balanceWETH)}\n`)
     ```
+
+4. Call the `WETH` contract's `deposit()` function to convert `0.001 ETH` to `0.001 WETH`, print the transaction details and balance. The `deposit()` function has no arguments, you can see that the balance changes to `1.002997`.
+
+    ```js
+        console.log("\n2. Call the desposit() function and deposit 0.001 ETH")
+        // Initiate transaction
+        const tx = await contractWETH.deposit({value: ethers.parseEther("0.001")})
+        // Wait for transaction to be on-chain
+        await tx.wait()
+        console.log(`Transaction details:`)
+        console.log(tx)
+        const balanceWETH_deposit = await contractWETH.balanceOf(address)
+        console.log(`WETH position after deposit: ${ethers.formatEther(balanceWETH_deposit)}\n`)
+    ```
+  Here is the translation:
+
+5. Call the `WETH` contract's `transfer()` function to transfer `0.001 WETH` to Vitalik, and print the balance. You can see that the balance changes to `1.001997`.
+
+    ```js
+        console.log("\n3. Call the transfer() function and transfer 0.001 WETH to vitalik")
+        // Initiate transaction
+        const tx2 = await contractWETH.transfer("vitalik.eth", ethers.parseEther("0.001"))
+        // Wait for transaction to be on-chain
+        await tx2.wait()
+        const balanceWETH_transfer = await contractWETH.balanceOf(address)
+        console.log(`WETH position after transfer: ${ethers.formatEther(balanceWETH_transfer)}\n`)
+    ```
+**Note**: Observe the `deposit()` function and the `balanceOf()` function, why are their return values different? Why does the former return a bunch of data, while the latter only returns a definite value? This is because for the wallet balance, it is a read-only operation, what you read is what you get. But for a function call, you don't know when the data will be on-chain, so it will only return the information of this transaction. In summary, for non-`pure`/`view` function calls, it will return transaction information. If you want to know how the contract variables change during the function execution, you can use `emit` to output events in the contract, and read the event information in the returned `transaction` information to get the corresponding values.
+
+## Summary
+
+In this lecture, we introduced how to declare a writable `Contract` variable and use it to interact with the `WETH` contract on the testnet. We not only called the `WETH`'s `deposit()` function to convert `0.001 ETH` to `WETH`, but also transferred it to Vitalik.
