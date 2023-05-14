@@ -54,9 +54,3 @@ const contractUSDT = new ethers.Contract(addressUSDT, abi, provider);
     console.log(e);
   }
 })()
-
-Source: Conversation with Bing, 5/14/2023
-(1) Alchemy - the web3 development platform. https://www.alchemy.com/.
-(2) Alchemy API Reference Overview. https://docs.alchemy.com/reference/api-overview.
-(3) AlchemyAPI - Wikipedia. https://en.wikipedia.org/wiki/AlchemyAPI.
-(4) Alchemy Docs. https://docs.alchemy.com/.
