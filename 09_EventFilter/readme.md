@@ -69,3 +69,71 @@ Where `EVENT_NAME` is the name of the event to filter, and `..args` are the topi
   The transaction did one thing: transferred `2983.98` USDT from `binance14` (Binance hot wallet) to address `0x354de44bedba213d612e92d3248b899de17b0c58`.
 
   Check the event log `Logs` information:
+
+- `address`: USDT contract address
+  - `topics[0]`: event hash, `keccak256("Transfer(address,address,uint256)")`
+  - `topics[1]`: transfer from address (Binance exchange hot wallet).
+  - `topics[2]` transfer to address.
+  - `data`: transfer amount.
+
+2. Create `provider`, `abi`, and `USDT` contract variables:
+
+  ```js
+  const provider = new ethers.JsonRpcProvider(ALCHEMY_MAINNET_URL);
+  // Contract address
+  const addressUSDT = '0xdac17f958d2ee523a2206206994597c13d831ec7'
+  // Exchange address
+  const accountBinance = '0x28C6c06298d514Db089934071355E5743bf21d60'
+  // Build ABI
+  const abi = [
+    "event Transfer(address indexed from, address indexed to, uint value)",
+    "function balanceOf(address) public view returns(uint)",
+  ];
+  // Create contract object
+  const contractUSDT = new ethers.Contract(addressUSDT, abi, provider);
+  ```
+
+3. Read the USDT balance of Binance hot wallet. You can see that the current Binance hot wallet has more than 800 million USDT
+  ```js
+  const balanceUSDT = await contractUSDT.balanceOf(accountBinance)
+  console.log(`USDT balance: ${ethers.formatUnits(ethers.BigNumber.from(balanceUSDT),6)}\n`)
+  ```
+  ![Binance hot wallet USDT balance](img/9-4.png)
+
+
+4. Create a filter to listen to the events of USDT transfers into Binance.
+
+  ```js
+  console.log("\n2. Create a filter to listen to transfers of USDT into the exchange")
+  let filterBinanceIn = contractUSDT.filters.Transfer(null, accountBinance);
+  console.log("Filter details:")
+  console.log(filterBinanceIn);
+  contractUSDT.on(filterBinanceIn, (from, to, value) => {
+    console.log('---------Listening to USDT transfers into the exchange--------');
+    console.log(
+      `${from} -> ${to} ${ethers.formatUnits(ethers.BigNumber.from(value),6)}`
+    )
+  })
+  ```
+  ![Listening to USDT transfers into Binance](img/9-5.png)
+
+4. Create a filter to listen to the events of USDT transfers out of Binance.
+
+  ```js
+  let filterToBinanceOut = contractUSDT.filters.Transfer(accountBinance, null);
+  console.log("\n3. Create a filter to listen to transfers of USDT out of the exchange")
+  console.log("Filter details:")
+  console.log(filterToBinanceOut);
+  contractUSDT.on(filterToBinanceOut, (from, to, value) => {
+    console.log('---------Listening to USDT transfers out of the exchange--------');
+    console.log(
+      `${from} -> ${to} ${ethers.formatUnits(ethers.BigNumber.from(value),6)}`
+    )
+  }
+  )
+  ```
+  ![Listening to USDT transfers out of Binance](img/9-6.png) 
+
+## Summary
+
+In this lecture, we introduced event filters and used them to listen to USDT transactions related to Binance exchange's hot wallet. You can use it to listen to any transactions you are interested in, such as finding out what new transactions smart money has made, what new projects NFT big shots have rushed into, and so on.
