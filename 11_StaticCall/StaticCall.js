@@ -30,3 +30,22 @@ const main = async () => {
 
     console.log(`Test wallet DAI holdings: ${ethers.formatEther(balanceDAI)}\n`)
     console.log(`Vitalik DAI holdings: ${ethers.formatEther(balanceDAIVitalik)}\n`)
+        
+  // 2. use staticCall to try to call transfer to send 10000 DAI, msg.sender is Vitalik, transaction will succeed
+    console.log("\n2.  use staticCall to try to call transfer to send 1 DAI, msg.sender is Vitalik's address")
+    // initiate transaction
+    const tx = await contractDAI.transfer.staticCall("vitalik.eth", ethers.parseEther("10000"), {from: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"})
+    console.log(`Will the transaction succeed?：`, tx)
+
+    // 3. use staticCall to try to call transfer to send 10000 DAI, msg.sender is test wallet address, transaction will fail
+    console.log("\n3.  use staticCall to try to call transfer to send 1 DAI, msg.sender is test wallet address")
+    const tx2 = await contractDAI.transfer.staticCall("vitalik.eth", ethers.parseEther("10000"), {from: address})
+    console.log(`Will the transaction succeed?：`, tx)
+
+    } catch (e) {
+        console.log(e);
+      }
+}
+
+main()
+
