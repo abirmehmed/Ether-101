@@ -75,3 +75,31 @@ In `ethers.js` you can use the `contract` object's `staticCall()` method to call
     const contractDAI = new ethers.Contract(addressDAI, abiDAI, provider)
     ```
 
+3. Check the DAI balance in the wallet, which is 0.
+
+    ```js
+    const address = await wallet.getAddress()
+    console.log("\n1. Read the DAI balance of the test wallet")
+    const balanceDAI = await contractDAI.balanceOf(address)
+    console.log(`DAI holdings: ${ethers.formatEther(balanceDAI)}\n`)
+    ```
+    ![Wallet DAI balance](img/11-2.png)
+
+4. Use `staticCall` to call the `transfer()` function, fill in the `from` parameter as Vitalik's address, and simulate Vitalik transferring `10000 DAI`. This transaction will succeed because Vitalik's wallet has enough `DAI`.
+
+    ```js
+    console.log("\n2.  Use staticCall to try to call transfer to send 1 DAI, msg.sender is Vitalik's address")
+    // initiate transaction
+    const tx = await contractDAI.transfer.staticCall("vitalik.eth", ethers.parseEther("10000"), {from: "vitalik.eth"})
+    console.log(`Will the transaction succeed?：`, tx)
+    ```
+4. Use `staticCall` to call the `transfer()` function, fill in the `from` parameter as the test wallet address, and simulate transferring `10000 DAI`. This transaction will fail, throw an error, and return the reason `Dai/insufficient-balance`.
+
+    ```js
+    console.log("\n3.  Use staticCall to try to call transfer to send 1 DAI, msg.sender is test wallet address")
+    const tx2 = await contractDAI.transfer.staticCall("vitalik.eth", ethers.parseEther("10000"), {from: address})
+    console.log(`Will the transaction succeed?：`, tx)
+    ```
+## Summary
+`ethers.js` encapsulates `eth_call` in the `staticCall` method, making it easy for developers to simulate transaction results and avoid sending transactions that may fail. We used `staticCall` to simulate transfers from Vitalik and the test wallet. Of course, this method has more uses, such as calculating the slippage of dogecoin transactions. Use your imagination, where will you use `staticCall`?
+
