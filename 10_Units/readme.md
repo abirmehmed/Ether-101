@@ -38,3 +38,69 @@ console.log(ethers.getBigInt(1000000000)) // generate from number
 // ethers.getBigInt(Number.MAX_SAFE_INTEGER);
 console.log("Maximum safe integer in js：", Number.MAX_SAFE_INTEGER)
 ```
+
+### `BigInt` operations
+
+`BigInt` supports many operations, such as addition, subtraction, multiplication, division, modulo `mod`, power `pow`, absolute value `abs`, etc.:
+> Note: Values with suffix `n` will be automatically converted to `BigInt`
+
+```js
+// operations
+console.log("Addition：", oneGwei + 1n)
+console.log("Subtraction：", oneGwei - 1n)
+console.log("Multiplication：", oneGwei * 2n)
+console.log("Division：", oneGwei / 2n)
+// comparison
+console.log("Are they equal：", oneGwei == 1000000000n)
+```
+## Unit conversion
+
+In Ethereum, `1 ether` is equal to `10^18 wei`. Here are some common units:
+
+In applications, we often convert values between user-readable strings (in `ether` units) and machine-readable values (in `wei` units). For example, wallets can specify balances (in `ether` units) and `gas` prices (in `gwei` units) for the user interface, but when sending transactions, both must be converted to values in `wei` units. `ethers.js` provides some utility functions to facilitate this type of conversion.
+
+- `formatUnits(value, unit)`: Formatting, small unit to large unit, such as `wei` -> `ether`, useful for displaying balances. In the parameters, the unit is filled with digits (numbers) or specified units (strings).
+
+    ```js
+    //code reference: https://docs.ethers.org/v6/api/utils/#about-units
+    console.group('\n2. Formatting: small unit to large unit, formatUnits');
+    console.log(ethers.formatUnits(oneGwei, 0));
+    // '1000000000'
+    console.log(ethers.formatUnits(oneGwei, "gwei"));
+    // '1.0'
+    console.log(ethers.formatUnits(oneGwei, 9));
+    // '1.0'
+    console.log(ethers.formatUnits(oneGwei, "ether"));
+    // `0.000000001`
+    console.log(ethers.formatUnits(1000000000, "gwei"));
+    // '1.0'
+    console.log(ethers.formatEther(oneGwei));
+    // `0.000000001` equivalent to formatUnits(value, "ether")
+    console.groupEnd();
+    ```
+- `parseUnits(value, unit)`: Parsing, large unit to small unit, such as `ether` -> `wei`, useful for converting user input values to values in `wei` units. In the parameters, the unit is filled with digits (numbers) or specified units (strings).
+```js
+   // 3. Parsing: large unit to small unit
+   // For example, convert ether to wei: parseUnits(value, unit), parseUnits default unit is ether
+   // Code reference: https://docs.ethers.org/v6/api/utils/#about-units
+   console.group('\n3. Parsing: large unit to small unit, parseUnits');
+   console.log(ethers.parseUnits("1.0").toString());
+   // { BigNumber: "1000000000000000000" }
+   console.log(ethers.parseUnits("1.0", "ether").toString());
+   // { BigNumber: "1000000000000000000" }
+   console.log(ethers.parseUnits("1.0", 18).toString());
+   // { BigNumber: "1000000000000000000" }
+   console.log(ethers.parseUnits("1.0", "gwei").toString());
+   // { BigNumber: "1000000000" }
+   console.log(ethers.parseUnits("1.0", 9).toString());
+   // { BigNumber: "1000000000" }
+   console.log(ethers.parseEther("1.0").toString());
+   // { BigNumber: "1000000000000000000" } equivalent to parseUnits(value, "ether")
+   console.groupEnd();
+   ```
+
+
+## Summary
+
+In this lesson, we introduced the `BigNumber` class, the common units in Ethereum, and unit conversion.
+
