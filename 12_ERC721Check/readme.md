@@ -1,5 +1,3 @@
-Here is the translated readme.md in English:
-
 ---
 title: 12. Identify ERC721 contract
 ---
@@ -85,4 +83,19 @@ The `ERC721` contract will implement the `supportsInterface` function of the `IE
     console.log(`Name: ${nameERC721}`)
     console.log(`Symbol: ${symbolERC721}`)
     ```
+
+4. Use the `supportsInterface()` function of `ERC165` to identify whether the contract is an ERC721 standard. If it is, it returns `true`; otherwise, it throws an error or returns `false`.
+
+    Note that in this code, the `selectorERC721` constant is extracted from the main function
+    ```js
+    // 2. Use ERC165's supportsInterface to determine if the contract is an ERC721 standard
+    // ERC721 interface's ERC165 identifier
+    const selectorERC721 = "0x80ac58cd"
+    const isERC721 = await contractERC721.supportsInterface(selectorERC721)
+    console.log("\n2. Use ERC165's supportsInterface to determine if the contract is an ERC721 standard")
+    console.log(`Is the contract an ERC721 standard: ${isERC721}`)
+    ```
+## Summary
+
+In this lecture, we introduced how to use `ethers.js` to identify whether a contract is an `ERC721`. Since we used the `ERC165` standard, only contracts that support the `ERC165` standard can be identified by this method, including `ERC721`, `ERC1155`, etc. But for standards like `ERC20` that do not support `ERC165`, we have to use other methods to identify them. Do you know how to check if a contract is an `ERC20`?
 
