@@ -35,3 +35,79 @@ const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
 const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
 const wallet = new ethers.Wallet(privateKey, provider)
 
+// 4. Declare Airdrop contract
+// Airdrop's ABI
+const abiAirdrop = [
+    "function multiTransferToken(address,address[],uint256[]) external",
+    "function multiTransferETH(address[],uint256[]) public payable",
+];
+// Airdrop contract address (Goerli testnet)
+const addressAirdrop = '0x71C2aD976210264ff0468d43b198FD69772A25fa' // Airdrop Contract
+// Declare Airdrop contract
+const contractAirdrop = new ethers.Contract(addressAirdrop, abiAirdrop, wallet)
+
+// 5. Declare WETH contract
+// WETH's ABI
+const abiWETH = [
+    "function balanceOf(address) public view returns(uint)",
+    "function transfer(address, uint) public returns (bool)",
+    "function approve(address, uint256) public returns (bool)"
+];
+// WETH contract address (Goerli testnet)
+const addressWETH = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6' // WETH Contract
+// Declare WETH contract
+const contractWETH = new ethers.Contract(addressWETH, abiWETH, wallet)
+
+
+const main = async () => {
+
+    // 6. Read the ETH and WETH balance of an address
+    console.log("\n3. Read the ETH and WETH balance of an address")
+    //Read WETH balance
+    const balanceWETH = await contractWETH.balanceOf(addresses[10])
+    console.log(`WETH holdings: ${ethers.formatEther(balanceWETH)}\n`)
+    //Read ETH balance
+    const balanceETH = await provider.getBalance(addresses[10])
+    console.log(`ETH holdings: ${ethers.formatEther(balanceETH)}\n`)
+
+    const myETH = await provider.getBalance(wallet)
+    const myToken = await contractWETH.balanceOf(wallet.getAddress())
+    // If wallet ETH is enough and WETH is enough
+    if(ethers.formatEther(myETH) > 0.002 && ethers.formatEther(myToken) >= 0.002){
+
+        // 7. Call multiTransferETH() function to transfer 0.0001 ETH to each wallet
+        console.log("\n4. Call multiTransferETH() function to transfer 0.0001 ETH to each wallet")
+        // Initiate transaction
+        const tx = await contractAirdrop.multiTransferETH(addresses, amounts, {value: ethers.parseEther("0.002")})
+        // Wait for transaction to be on chain
+        await tx.wait()
+        // console.log(`Transaction details:`)
+        // console.log(tx)
+        const balanceETH2 = await provider.getBalance(addresses[10])
+        console.log(`After sending, the wallet ETH holdings: ${ethers.formatEther(balanceETH2)}\n`)
+        
+        // 8. Call multiTransferToken() function to transfer 0.0001 WETH to each wallet
+        console.log("\n5. Call multiTransferToken() function to transfer 0.0001 WETH to each wallet")
+        // First approve WETH to Airdrop contract
+        const txApprove = await contractWETH.approve(addressAirdrop, ethers.parseEther("1"))
+        await txApprove.wait()
+        // Initiate transaction
+        const tx2 = await contractAirdrop.multiTransferToken(addressWETH, addresses, amounts)
+        // Wait for transaction to be on chain
+        await tx2.wait()
+        // console.log(`Transaction details:`)
+        // console.log(tx2)
+        // Read WETH balance
+        const balanceWETH2 = await contractWETH.balanceOf(addresses[10])
+        console.log(`After sending, the wallet WETH holdings: ${ethers.formatEther(balanceWETH2)}\n`)
+
+    }else{
+        // If ETH and WETH are not enough
+        console.log("Not enough ETH, please use your own small wallet for testing and exchange some WETH")
+        console.log("1. chainlink faucet: https://faucets.chain.link/goerli")
+        console.log("2. paradigm faucet: https://faucet.paradigm.xyz/")
+    }
+}
+
+main()
+
