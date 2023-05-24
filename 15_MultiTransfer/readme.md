@@ -118,3 +118,24 @@ Next we write a script that calls the `Airdrop` contract to transfer `ETH` (nati
     console.log(`ETH holdings: ${ethers.formatEther(balanceETH)}\n`)
     ```
 
+8. Call multiTransferToken() function to transfer `0.0001 WETH` to each wallet, and you can see the balance changes after sending.
+
+    ```js
+    console.log("\n5. Call multiTransferToken() function to transfer 0.001 WETH to each wallet")
+    // First approve WETH to Airdrop contract
+    const txApprove = await contractWETH.approve(addressAirdrop, ethers.parseEther("1"))
+    await txApprove.wait()
+    // Initiate transaction
+    const tx2 = await contractAirdrop.multiTransferToken(addressWETH, addresses, amounts)
+    // Wait for transaction to be on chain
+    await tx2.wait()
+    // console.log(`Transaction details:`)
+    // console.log(tx2)
+    // Read WETH balance
+    const balanceWETH2 = await contractWETH.balanceOf(addresses[10])
+    console.log(`After sending, the wallet WETH holdings: ${ethers.formatEther(balanceWETH2)}\n`)
+    ```
+## Summary
+
+In this lecture, we introduced how to use `ethers.js` to call the `Airdrop` contract for batch transfer. In the example, we sent `ETH` and `WETH` to `20` different addresses, saving time and money (gas fees).
+
