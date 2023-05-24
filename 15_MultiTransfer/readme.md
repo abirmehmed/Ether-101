@@ -49,3 +49,72 @@ Next we write a script that calls the `Airdrop` contract to transfer `ETH` (nati
     console.log(hdNode);
     ```
 
+2. Use HD wallet to generate 20 wallet addresses.
+    ```js
+    console.log("\n2. Derive 20 wallets from HD wallet")
+    const numWallet = 20
+    // Derivation path: m / purpose' / coin_type' / account' / change / address_index
+    // We only need to switch the last bit address_index, and we can derive new wallets from hdNode
+    let basePath = "m/44'/60'/0'/0";
+    let addresses = [];
+    for (let i = 0; i < numWallet; i++) {
+        let hdNodeNew = hdNode.derivePath(basePath + "/" + i);
+        let walletNew = new ethers.Wallet(hdNodeNew.privateKey);
+        addresses.push(walletNew.address);
+    }
+    console.log(addresses)
+    const amounts = Array(20).fill(ethers.parseEther("0.0001"))
+    console.log(`Send amount: ${amounts}`)
+    ```
+3. Create provider and wallet for sending tokens.
+
+    ```js
+    // Prepare alchemy API, you can refer to https://github.com/AmazingAng/WTF-Solidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
+    const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';
+    const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
+
+    // Use private key and provider to create wallet object
+    // If this wallet has no goerli testnet ETH
+    // Please use your own small wallet for testing, wallet address: 0x338f8891D6BdC58eEB4754352459cC461EfD2a5E , please do not send any ETH to this address
+    // Be careful not to upload your private key to github
+    const privateKey = '0x21ac72b6ce19661adf31ef0d2bf8c3fcad003deee3dc1a1a64f5fa3d6b049c06'
+    const wallet = new ethers.Wallet(privateKey, provider)
+    ```
+
+4. Create Airdrop contract.
+    ```js
+    // Airdrop's ABI
+    const abiAirdrop = [
+        "function multiTransferToken(address,address[],uint256[]) external",
+        "function multiTransferETH(address[],uint256[]) public payable",
+    ];
+    // Airdrop contract address (Goerli testnet)
+    const addressAirdrop = '0x71C2aD976210264ff0468d43b198FD69772A25fa' // Airdrop Contract
+    // Declare Airdrop contract
+    const contractAirdrop = new ethers.Contract(addressAirdrop, abiAirdrop, wallet)
+    ```
+5. Create WETH contract.
+    ```js
+    // WETH's ABI
+    const abiWETH = [
+        "function balanceOf(address) public view returns(uint)",
+        "function transfer(address, uint) public returns (bool)",
+        "function approve(address, uint256) public returns (bool)"
+    ];
+    // WETH contract address (Goerli testnet)
+    const addressWETH = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6' // WETH Contract
+    // Declare WETH contract
+    const contractWETH = new ethers.Contract(addressWETH, abiWETH, wallet)
+    ```
+
+6. Read the ETH and WETH balance of an address.
+    ```js
+    console.log("\n3. Read the ETH and WETH balance of an address")
+    //Read WETH balance
+    const balanceWETH = await contractWETH.balanceOf(addresses[10])
+    console.log(`WETH holdings: ${ethers.formatEther(balanceWETH)}\n`)
+    //Read ETH balance
+    const balanceETH = await provider.getBalance(addresses[10])
+    console.log(`ETH holdings: ${ethers.formatEther(balanceETH)}\n`)
+    ```
+
