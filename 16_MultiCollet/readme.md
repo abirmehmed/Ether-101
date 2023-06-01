@@ -1,4 +1,3 @@
-Here is the translation:
 
 ---
 title: 16. Batch Collection
@@ -85,3 +84,49 @@ Here is the translation:
     const balanceETH = await provider.getBalance(wallets[19])
     console.log(`ETH holdings: ${ethersfromPhrase.formatEther(balanceETH)}\n`)
     ```
+
+6. Use the `sendTransaction()` method of the wallet class to send transactions and collect the `ETH` from each wallet.
+
+    ```js
+    // 6. Batch collect ETH from 20 wallets
+    console.log("\n4. Batch collect ETH from 20 wallets")
+    const txSendETH = {
+        to: wallet.address,
+        value: amount
+    }
+    for (let i = 0; i < numWallet; i++) {
+        // Connect wallet to provider
+        let walletiWithProvider = wallets[i].connect(provider)
+        var tx = await walletiWithProvider.sendTransaction(txSendETH)
+        console.log(`Start collecting ETH from wallet ${i+1} ${walletiWithProvider.address}`)
+    }
+    await tx.wait()
+    console.log(`ETH collection completed`)
+    ```
+7. Connect the `WETH` contract to a new wallet and then call the `transfer()` method to collect the `WETH` from each wallet.
+
+    ```js
+    for (let i = 0; i < numWallet; i++) {
+        // Connect wallet to provider
+        let walletiWithProvider = wallets[i].connect(provider)
+        // Connect contract to new wallet
+        let contractConnected = contractWETH.connect(walletiWithProvider)
+        var tx = await contractConnected.transfer(wallet.address, amount)
+        console.log(`Start collecting WETH from wallet ${i+1} ${wallets[i].address}`)
+    }
+    await tx.wait()
+    console.log(`WETH collection completed`)
+    ```
+8. Read the ETH and WETH balance of an address after collection, you can see that the `ETH` and `WETH` balances have decreased and the collection was successful!
+    ```js
+    console.log("\n6. Read the ETH and WETH balance of an address after collection")
+    // Read WETH balance
+    const balanceWETHAfter = await contractWETH.balanceOf(wallets[19])
+    console.log(`WETH holdings after collection: ${ethersfromPhrase.formatEther(balanceWETHAfter)}`)
+    // Read ETH balance
+    const balanceETHAfter = await provider.getBalance(wallets[19])
+    console.log(`ETH holdings after collection: ${ethersfromPhrase.formatEther(balanceETHAfter)}\n`)
+    ```
+## Summary
+
+In this lesson, we introduced batch collection and used an `ethers.js` script to collect `ETH` and `WETH` from `20` wallets into one wallet.
