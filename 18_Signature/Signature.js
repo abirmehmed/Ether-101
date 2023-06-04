@@ -46,4 +46,45 @@ const main = async () => {
         "function ownerOf(uint256) view returns (address)",
         "function balanceOf(address) view returns (uint256)",
     ];
-  
+
+    // Contract bytecode. In Remix, you can find the bytecode in two places:
+    // i. The Bytecode button in the deployment panel
+    // ii. The json file with the same name as the contract in the artifact folder in the file panel
+    // The data corresponding to the "object" field is the bytecode. It's quite long and starts with 608060.
+    // "object": "608060405260646000553480156100...
+    const bytecodeNFT = contractJson.default.object;
+    const factoryNFT = new ethers.ContractFactory(abiNFT, bytecodeNFT, wallet);
+
+    // Check the ETH balance in the wallet
+    const balanceETH = await provider.getBalance(wallet)
+
+    // If the wallet has enough ETH
+    if(ethers.formatEther(balanceETH) > 0.002){
+        // 4. Deploy the NFT contract using contractFactory
+        console.log("\n2. Deploy the NFT contract using contractFactory")
+        // Deploy the contract and fill in the constructor parameters
+        const contractNFT = await factoryNFT.deploy("WTF Signature", "WTF", wallet.address)
+        console.log(`Contract address: ${contractNFT.target}`);
+        console.log("Waiting for contract deployment on-chain")
+        await contractNFT.waitForDeployment()
+        // You can also use contractNFT.deployTransaction.wait()
+        console.log("Contract is on-chain")
+
+        // 5. Call the mint() function, use signature verification to whitelist and mint NFT for account address
+        console.log("\n3. Call the mint() function, use signature verification to whitelist and mint NFT for first address")
+        console.log(`NFT name: ${await contractNFT.name()}`)
+        console.log(`NFT symbol: ${await contractNFT.symbol()}`)
+        let tx = await contractNFT.mint(account, tokenId, signature)
+        console.log("Minting in progress, waiting for transaction on-chain")
+        await tx.wait()
+        console.log(`Mint successful, NFT balance of address ${account}: ${await contractNFT.balanceOf(account)}\n`)
+
+    }else{
+        // If there is not enough ETH
+        console.log("Not enough ETH, go to a faucet to get some Goerli ETH")
+        console.log("1. Chainlink faucet: https://faucets.chain.link/goerli")
+        console.log("2. Paradigm faucet: https://faucet.paradigm.xyz/")
+    }
+}
+
+main()
