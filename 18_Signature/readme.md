@@ -60,3 +60,62 @@ The `SignatureNFT` contract in [WTF Solidity Getting Started Lecture 37: Digital
     // Signature：0x390d704d7ab732ce034203599ee93dd5d3cb0d4d1d7c600ac11726659489773d559b12d220f99f41d17651b0c1c6a669d346a397f8541760d6b32a5725378b241c
     ```
 
+1. First, a `provider` and `wallet` are created, where the `wallet` is used for signing.
+
+    ```js
+    // Prepare the alchemy API. You can refer to https://github.com/AmazingAng/WTF-Solidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md
+    const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';
+    const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
+    // Create a wallet object using the private key and provider
+    const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
+    const wallet = new ethers.Wallet(privateKey, provider)
+    ```
+
+2. A `message` is generated and signed based on the whitelisted addresses and the `tokenId` they can mint.
+    ```js
+    // Create a message
+    const account = "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
+    const tokenId = "0"
+    // Equivalent to keccak256(abi.encodePacked(account, tokenId)) in Solidity
+    const msgHash = ethers.solidityPackedKeccak256(
+        ['address', 'uint256'],
+        [account, tokenId])
+    console.log(`msgHash：${msgHash}`)
+    // Sign the message
+    const messageHashBytes = ethers.getBytes(msgHash)
+    const signature = await wallet.signMessage(messageHashBytes);
+    console.log(`Signature：${signature}`)
+    ```
+
+3. A contract factory is created to prepare for the deployment of the `NFT` contract.
+    ```js
+    // Human-readable ABI for the NFT
+    const abiNFT = [
+        "constructor(string memory _name, string memory _symbol, address _signer)",
+        "function name() view returns (string)",
+        "function symbol() view returns (string)",
+        "function mint(address _account, uint256 _tokenId, bytes memory _signature) external",
+        "function ownerOf(uint256) view returns (address)",
+        "function balanceOf(address) view returns (uint256)",
+    ];
+    // Contract bytecode. In Remix, you can find the bytecode in two places:
+    // i. The Bytecode button in the deployment panel
+    // ii. The json file with the same name as the contract in the artifact folder in the file panel
+    // The data corresponding to the "object" field is the bytecode. It's quite long and starts with 608060.
+    // "object": "608060405260646000553480156100...
+    const bytecodeNFT = contractJson.default.object;
+    const factoryNFT = new ethers.ContractFactory(abiNFT, bytecodeNFT, wallet);
+    ```
+
+4. The NFT contract is deployed using the contract factory.
+
+    ```js
+    // Deploy the contract and fill in the constructor parameters
+    const contractNFT = await factoryNFT.deploy("WTF Signature", "WTF", wallet.address)
+    console.log(`Contract address: ${contractNFT.target}`);
+    console.log("Waiting for contract deployment on-chain")
+    await contractNFT.waitForDeployment()
+    // You can also use contractNFT.deployTransaction.wait()
+    console.log("Contract is on-chain")
+    ```
+
