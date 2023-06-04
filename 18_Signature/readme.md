@@ -119,3 +119,28 @@ The `SignatureNFT` contract in [WTF Solidity Getting Started Lecture 37: Digital
     console.log("Contract is on-chain")
     ```
 
+5. The `mint()` function of the `NFT` contract is called, using off-chain signature verification of the whitelist to mint an `NFT` for the `account` address.
+
+    ```js
+    console.log(`NFT name: ${await contractNFT.name()}`)
+    console.log(`NFT symbol: ${await contractNFT.symbol()}`)
+    let tx = await contractNFT.mint(account, tokenId, signature)
+    console.log("Minting in progress, waiting for transaction on-chain")
+    await tx.wait()
+    console.log(`Mint successful, NFT balance of address ${account}: ${await contractNFT.balanceOf(account)}\n`)
+    ```
+
+## For Production Use
+
+Using digital signatures to verify whitelisted issuance of `NFTs` in a production environment mainly involves the following steps:
+
+1. Determine the whitelist.
+2. Maintain a signing wallet on the backend and generate the `message` and `signature` for each whitelist.
+3. Deploy the `NFT` contract and save the public key `signer` of the signing wallet in the contract.
+4. When users mint, they request the corresponding `signature` from the backend for their address.
+5. Users call the `mint()` function to mint the `NFT`.
+
+## Summary
+
+In this lesson, we introduced how to use `ethers.js` with smart contracts to verify whitelists and issue `NFTs` using off-chain digital signatures. `Merkle Tree` and off-chain digital signatures are currently the most mainstream and economical ways to issue whitelists. If the whitelist is already determined at the time of contract deployment, it is recommended to use a `Merkle Tree`. If new whitelists need to be added continuously after contract deployment, such as Galaxy Project's `OAT`, it is recommended to use off-chain signatures. Otherwise, you will need to constantly update the `root` of the `Merkle Tree` in the contract, consuming more gas.
+
