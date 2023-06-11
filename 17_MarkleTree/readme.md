@@ -56,5 +56,51 @@ Here, we demonstrate how to generate a `Merkle Tree` whose leaf data contains `4
      ```js
      const leaf = tokens. map(x => ethers. keccak256(x))
      ```
+     3. Create `Merkle Tree`, the hash function is still `keccak256`, the optional parameter `sortPairs: true` ([constructor function documentation](https://github.com/miguelmota/merkletreejs/blob/master/docs/ classes/_src_merkletree_.merkletree.md#constructor)), consistent with `Merkle Tree` contract processing.
+
+     ```js
+     const merkletree = new MerkleTree(leaf, ethers.keccak256, { sortPairs: true });
+     ```
+
+4. Obtain `root` of `Merkle Tree`.
+     ```js
+     const root = merkletree. getHexRoot()
+     ```
+
+5. Get `proof` of the `0`th leaf node.
+     ```js
+     const proof = merkletree. getHexProof(leaf[0]);
+     ```
+
+## `Merkle Tree` whitelist minted `NFT`
+
+Here, we take an example to use `MerkleTree.js` and `ethers.js` to verify the whitelist and mint `NFT`.
+
+1. Generate `Merkle Tree`.
+
+     ```js
+     // 1. Generate merkle tree
+     console.log("\n1. Generate merkle tree")
+     // whitelist address
+     const tokens = [
+         "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",
+         "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+         "0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db",
+         "0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB"
+     ];
+     // leaf, merkletree, proof
+     const leaf = tokens. map(x => ethers. keccak256(x))
+     const merkletree = new MerkleTree(leaf, ethers.keccak256, { sortPairs: true });
+     const proof = merkletree. getHexProof(leaf[0]);
+     const root = merkletree. getHexRoot()
+     console.log("Leaf:")
+     console. log(leaf)
+     console.log("\nMerkleTree:")
+     console. log(merkletree. toString())
+     console.log("\nProof:")
+     console. log(proof)
+     console.log("\nRoot:")
+     console. log(root)
+     ```
 
 
