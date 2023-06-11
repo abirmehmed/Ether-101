@@ -102,5 +102,49 @@ Here, we take an example to use `MerkleTree.js` and `ethers.js` to verify the wh
      console.log("\nRoot:")
      console. log(root)
      ```
+     2. Create provider and wallet
+
+     ```js
+     // Prepare alchemy API, please refer to https://github.com/AmazingAng/WTF-Solidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md
+     const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';
+     const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
+     // Create wallet object with private key and provider
+     const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
+     const wallet = new ethers. Wallet(privateKey, provider)
+     ```
+
+3. Create a contract factory to prepare for contract deployment.
+
+     ```js
+     // 3. Create a contract factory
+     // NFT's abi
+     const abiNFT = [
+         "constructor(string memory name, string memory symbol, bytes32 merkleroot)",
+         "function name() view returns (string)",
+         "function symbol() view returns (string)",
+         "function mint(address account, uint256 tokenId, bytes32[] calldata proof) external",
+         "function ownerOf(uint256) view returns (address)",
+         "function balanceOf(address) view returns (uint256)",
+     ];
+     // Contract bytecode, in remix, you can find Bytecode in two places
+     // i. Bytecode button of the deployment panel
+     // ii. In the json file with the same name as the contract under the artifact folder of the file panel
+     // The data corresponding to the "object" field in it is Bytecode, which is quite long, starting from 608060
+     // "object": "608060405260646000553480156100...
+     const bytecodeNFT = contractJson.default.object;
+     const factoryNFT = new ethers.ContractFactory(abiNFT, bytecodeNFT, wallet);
+     ```
+
+4. Use contractFactory to deploy NFT contracts
+
+     ```js
+     console.log("\n2. Use contractFactory to deploy NFT contract")
+     // Deploy the contract and fill in the parameters of the constructor
+     const contractNFT = await factoryNFT.deploy("WTF Merkle Tree", "WTF", root)
+     console.log(`Contract address: ${contractNFT.target}`);
+     console.log("Waiting for the contract to be deployed on the chain")
+     await contractNFT.waitForDeployment()
+     console.log("The contract has been uploaded")
+     ```
 
 
