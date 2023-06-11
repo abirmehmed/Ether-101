@@ -146,5 +146,27 @@ Here, we take an example to use `MerkleTree.js` and `ethers.js` to verify the wh
      await contractNFT.waitForDeployment()
      console.log("The contract has been uploaded")
      ```
+5. Call `mint()` function, use `merkle tree` to verify the whitelist, and mint `NFT` for `0`th address. After the success of `mint`, you can see that the balance of `NFT` has changed to `1`.
+     ```js
+     console.log("\n3. Call the mint() function, use the merkle tree to verify the whitelist, and cast an NFT for the first address")
+     console.log(`NFT name: ${await contractNFT.name()}`)
+     console.log(`NFT symbol: ${await contractNFT.symbol()}`)
+     let tx = await contractNFT.mint(tokens[0], "0", proof)
+     console.log("Casting, waiting for the transaction to be uploaded")
+     await tx. wait()
+     console.log(`mint succeeded, NFT balance of address ${tokens[0]}: ${await contractNFT.balanceOf(tokens[0])}\n`)
+     ```
+## For production environment
 
+In the production environment, using `Merkle Tree` to verify the whitelist and issue `NFT` mainly has the following steps:
+
+1. Determine the whitelist list.
+2. Generate the `Merkle Tree` of the whitelist list on the backend.
+3. Deploy the `NFT` contract and save the `root` of the `Merkle Tree` in the contract.
+4. When the user casts, request the `proof` corresponding to the address from the backend.
+5. The user calls the `mint()` function to mint `NFT`.
+
+## Summarize
+
+In this lecture, we briefly introduced `Merkle Tree`, and used `MerkleTree.js` and `ethers.js` to create and verify the whitelist and mint `NFT`.
 
