@@ -19,3 +19,5 @@ In this lecture, we will write a script that utilizes the `Merkle Tree` whitelis
 ## Merkle Tree
 `Merkle Tree`, also called Merkle tree or hash tree, is the underlying encryption technology of the blockchain and is widely used by the Bitcoin and Ethereum blockchains. `Merkle Tree` is a bottom-up encrypted tree, each leaf is the hash of the corresponding data, and each non-leaf is the hash of its `2` child nodes.
 
+`Merkle Tree` allows efficient and secure verification of the contents of large data structures (`Merkle Proof`). For a `Merkle Tree` with `N` leaf nodes, when the root value of `root` is known, verifying whether a certain data is valid (belonging to `Merkle Tree` leaf nodes) only needs `log(N) `A data (also called `proof`), very efficient. If the data is wrong, or the `proof` given is wrong, the `root` rooting cannot be restored. In the following example, the `Merkle proof` of leaf `L1` is `Hash 0-1` and `Hash 1`: Knowing these two values, you can verify whether the value of `L1` is in the leaf of `Merkle Tree` middle.
+
