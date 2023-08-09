@@ -76,7 +76,7 @@ Now, let's write a script to listen to the mempool.
         }
     });
     ```
-    ![Get pending transaction hashes](./img/19-2.png)
+   ![image](https://github.com/abirmehmed/Ether-101/assets/124920759/afb1c78a-f8dc-454a-8d02-141c18e43eb0)
 
 4. Retrieve transaction details using the hash of the pending transaction. We can see that the transaction hasn't been mined yet, so its `blockHash`, `blockNumber`, and `transactionIndex` are all empty. However, we can access other information such as the sender's address `from`, gas price `gasPrice`, recipient address `to`, sent Ether amount `value`, and transaction data `data`. MEV bots use this information for MEV extraction.
 
