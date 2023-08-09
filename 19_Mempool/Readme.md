@@ -92,7 +92,7 @@ Now, let's write a script to listen to the mempool.
         }
     }, 1000));
     ```
-    ![Get transaction details](./img/19-3.png)
+    ![image](https://github.com/abirmehmed/Ether-101/assets/124920759/58bb72a2-a4f7-4afd-8494-4757482cc69d)
 
 ## Summary
 
