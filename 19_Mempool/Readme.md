@@ -24,7 +24,7 @@ Before a user's transaction is included in the Ethereum blockchain by miners, al
 
 Additionally, some MEV bots search for profitable transactions in the mempool. For example, a swap transaction with a high slippage setting could be vulnerable to sandwich attacks. By adjusting the gas, these bots can insert a buy order before the transaction and a sell order after, effectively selling the tokens at a higher price to users.
 
-![Mempool](./img/19-1.png)
+![image](https://github.com/abirmehmed/Ether-101/assets/124920759/a555ff09-b1e4-4429-bcfc-c3f2cd16a6c7)
 
 ## Listening to the Mempool
 
