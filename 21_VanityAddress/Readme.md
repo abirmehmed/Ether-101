@@ -1,6 +1,7 @@
-```
-title : 21. Vanity Address Generator
-```
+---
+title: 21. Vanity Address Generator
+---
+
 ### Ethers Quick Start: 21. Vanity Address Generator
 
 I have recently been revisiting ethers.js to brush up on the details and create a simple guide called "WTF Ethers Quick Start" for beginners to use.
