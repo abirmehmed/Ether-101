@@ -1,87 +1,89 @@
-# Ethers.js Tutorial
+#### WTF Ethers
 
-This is a tutorial on how to use [ethers.js](https://docs.ethers.io/v6/) library to interact with the Ethereum network. Ethers.js is a lightweight and modular library for working with Ethereum smart contracts, wallets, providers and more.
+We are currently relearning ethers.js to reinforce the details and write a "WTF Ethers Crash Course" for beginners. We will update it with 1-3 lessons per week.
 
-## What will you learn?
+This is a sister course to the [WTF Solidity Crash Course](https://github.com/AmazingAng/WTFSolidity) and is proudly produced by the WTF Academy community.
 
-In this tutorial, you will learn how to:
+> Note: This tutorial is based on the latest version of Ethers.js v6. For the previous version (v5) tutorial, see [here](https://github.com/WTFAcademy/WTF-Ethers/tree/wtf-ethers-v5).
 
-- Connect to the Ethereum network using different providers
-- Create and manage Ethereum wallets and accounts
-- Send and receive ether and tokens
-- Deploy and interact with smart contracts
-- Listen and filter events and logs
-- Sign and verify messages and transactions
-- Use advanced features like Flashbots, EIP-712 and more
+The roadmap is determined based on the number of stars for this repository:
+- [x] 64 :star: Establish a community: [discord](https://discord.gg/5akcruXrsk) | [WeChat group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform)
+- [x] 128 :star: Release advanced content
+- [ ] 256 :star: Provide course certification
 
-## Prerequisites
+### Running in VSCode
 
-To follow this tutorial, you need to have:
+To run the code, you need to install [VSCode](https://code.visualstudio.com/download) and [Node.js](https://nodejs.org/download/). Then, run the following commands:
 
-- Basic knowledge of JavaScript and Node.js
-- [Node.js](https://nodejs.org/en/) installed on your machine
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) installed on your machine
-- An [Alchemy](https://www.alchemy.com/) account and API key
-- A code editor of your choice (we recommend [VS Code](https://code.visualstudio.com/))
-
-## How to start?
-
-To start this tutorial, you need to clone this repository and install the dependencies:
-
-```bash
-git clone https://github.com/abirmehmed/Ether-101.git
-cd ethers-js-tutorial
-npm install # or yarn install
+```shell
+npm install
+node 01_HelloVitalik/HelloVitalik.js
 ```
 
-Then, you need to create a `.env` file in the root directory and add your Alchemy API key:
+### Running in an Online Editor
 
-```bash
-ALCHEMY_MAINNET_URL=https://eth-mainnet.g.alchemy.com/v2/your-api-key-here
-```
+You can use an online JavaScript editor to run the code. Here are a few options:
+- [replit.com](https://replit.com/)
+- [playcode.io](https://playcode.io)
 
-You can also add other environment variables like your private key or mnemonic phrase if you want to use them in the tutorial.
+## Getting Started
 
-The tutorial is divided into several chapters, each with its own folder and files. You can find the instructions and code snippets for each chapter in the `README.md` file inside each folder. You can also find the complete code for each chapter in the `index.js` file inside each folder.
+**Lesson 1: HelloVitalik (6 lines of code)**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/01_HelloVitalik) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/01_HelloVitalik/readme.md)
 
-To run the code for each chapter, you can use this command:
+**Lesson 2: Provider**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/02_Provider) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/02_Provider/readme.md)
 
-```bash
-node chapter-number/index.js # e.g. node 01-provider/index.js
-```
+**Lesson 3: Reading Contract Information**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/03_ReadContract) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/03_ReadContract/readme.md)
 
-You can also use an online editor like [playcode.io](https://playcode.io/) or [replit.com](https://replit.com/) to run the code in your browser. However, you need to import ethers.js library from a CDN (content delivery network) link instead of installing it locally. You can use this link:
+**Lesson 4: Sending ETH**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/04_SendETH) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/04_SendETH/readme.md)
 
-```javascript
-import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.2.3/ethers.js";
-```
+**Lesson 5: Contract Interaction**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/05_WriteContract) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/05_WriteContract/readme.md)
 
-You also need to replace the Alchemy mainnet URL with your own API key.
+**Lesson 6: Deploying a Contract**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/06_DeployContract) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/06_DeployContract/readme.md)
 
-## What are the chapters?
+**Lesson 7: Retrieving Events**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/07_Event) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/07_Event/readme.md)
 
-The chapters of this tutorial are:
+**Lesson 8: Contract Listening**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/08_ContractListener) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/08_ContractListener/readme.md)
 
-- Chapter 1: Provider - How to connect to the Ethereum network using different providers
-- Chapter 2: Wallet - How to create and manage Ethereum wallets and accounts
-- Chapter 3: Transaction - How to send and receive ether and tokens
-- Chapter 4: Contract - How to deploy and interact with smart contracts
-- Chapter 5: Event - How to listen and filter events and logs
-- Chapter 6: Signature - How to sign and verify messages and transactions
-- Chapter 7: Flashbots - How to use Flashbots to avoid paying gas fees and front-run transactions
-- Chapter 8: EIP-712 - How to use EIP-712 to sign structured data
+**Lesson 9: Event Filtering**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/09_EventFilter) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/09_EventFilter/readme.md)
 
-## Where to go next?
+**Lesson 10: Unit Conversion**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/10_Units) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/10_Units/readme.md)
 
-Congratulations! You have completed the ethers.js tutorial. You have learned how to use ethers.js library to interact with the Ethereum network. You have also learned some advanced features like Flashbots and EIP-712.
+## Advanced
 
-If you want to learn more about ethers.js, you can check out the [official documentation](https://docs.ethers.io/v6/), which has more examples and details.
+**Lesson 11: CallStatic**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/11_StaticCall) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/11_StaticCall/readme.md)
 
-If you want to learn more about Ethereum development, you can check out these resources:
+**Lesson 12: Identifying ERC721**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/12_ERC721Check) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/12_ERC721Check/readme.md)
 
-- [Ethereum.org](https://ethereum.org/en/) - The official website of Ethereum, which has guides, tutorials, tools and more.
-- [CryptoZombies](https://cryptozombies.io/) - A fun and interactive way to learn how to write smart contracts in Solidity.
-- [OpenZeppelin](https://openzeppelin.com/) - A platform for secure smart contract development, which has libraries, tools, audits and more.
-- [Truffle](https://www.trufflesuite.com/) - A development environment, testing framework and asset pipeline for Ethereum.
+**Lesson 13: Encoding Calldata**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/13_EncodeCalldata) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/13_EncodeCalldata/readme.md)
 
+**Lesson 14: Bulk Wallet Generation**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/14_HDwallet) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/14_HDwallet/readme.md)
 
+**Lesson 15: Bulk Transfers**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/15_MultiTransfer) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/15_MultiTransfer/readme.md)
+
+**Lesson 16: Bulk Collection**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/16_MultiCollect) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/16_MultiCollect/readme.md)
+
+**Lesson 17: Merkle Tree Script**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/17_MerkleTree) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/17_MerkleTree/readme.md)
+
+**Lesson 18: Digital Signature Script**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/18_Signature) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/18_Signature/readme.md)
+
+**Lesson 19: Mempool Monitoring**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/19_Mempool) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/19_Mempool/readme.md)
+
+**Lesson 20: Decoding Transaction Data**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/20_DecodeTx) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/20_DecodeTx/readme.md)
+
+## Applications
+
+**Lesson 21: Vanity Address Generator**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/21_VanityAddress) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/21_VanityAddress/readme.md)
+
+**Lesson 22: Reading Arbitrary Data**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/22_ReadAnyData) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/22_ReadAnyData/readme.md)
+
+**Lesson 23: Front-Running Script**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/23_Frontrun) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/23_Frontrun/readme.md)
+
+**Lesson 24: Identifying ERC20**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/24_ERC20Check) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/24_ERC20Check/readme.md)
+
+**Lesson 25: Flashbots**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/25_Flashbots) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/25_Flashbots/readme.md)
+
+## Tools
+
+**ET01: Connecting Wallets**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/ET01_Metamask) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/ET01_Metamask/readme.md)
+
+**ET02: Wallet Signature Login**: [Code](https://github.com/WTFAcademy/WTFEthers/blob/main/ET02_SignInWithEthereum) | [Tutorial](https://github.com/WTFAcademy/WTFEthers/blob/main/ET02_SignInWithEthereum
